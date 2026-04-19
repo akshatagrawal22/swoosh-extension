@@ -41,15 +41,6 @@ Open a new tab — you'll see Swoosh.
 
 ---
 
-## Screenshots
-
-| | |
-|---|---|
-| <img src="screenshots/dark-warm-theme.png" width="280" /> | <img src="screenshots/dark-cool-theme.png" width="280" /> |
-| <img src="screenshots/search-bar.png" width="280" /> | <img src="screenshots/save-for-later.png" width="280" /> |
-
----
-
 ## Tech stack
 
 | What | How |
