@@ -24,7 +24,7 @@
 <body>
 
 <h1>Swoosh — Privacy Policy</h1>
-<p class="subtitle">Last updated: April 17, 2026</p>
+<p class="subtitle">Last updated: April 20, 2026</p>
 
 <h2>Overview</h2>
 <p>
@@ -60,11 +60,10 @@
   third party — ever.
 </p>
 <p>
-  The extension makes limited external requests to Google's services for user experience:
+  The extension makes one external request to Google's services for user experience:
 </p>
 <ul>
-  <li><strong>Favicon requests</strong> — when a tab's native favicon is unavailable, the extension requests a favicon from Google. No browsing data is transmitted; only the domain name is sent.</li>
-  <li><strong>Search suggestions</strong> — when you type in the universal search bar, queries are sent to Google's suggestion service to show autocomplete results. These requests contain only what you type, not your browsing history.</li>
+  <li><strong>Search suggestions</strong> — when you type in the universal search bar, the text you type is sent to Google's suggestion API to show autocomplete results. This contains only your search query, not your browsing history or open tab data.</li>
 </ul>
 <p>
   No browsing data (tab URLs, titles, domains) is ever sent externally.
@@ -72,10 +71,8 @@
 
 <h2>Permissions explained</h2>
 <ul>
-  <li><strong>tabs</strong> — required to read tab URLs, titles, and activity for the dashboard.</li>
-  <li><strong>activeTab</strong> — required to detect which tab is currently in focus for session timing.</li>
-  <li><strong>storage</strong> — required to persist saved tabs and daily stats locally on your device.</li>
-  <li><strong>topSites</strong> — required to display your most visited sites on the dashboard.</li>
+  <li><strong>tabs</strong> — required to read tab URLs, titles, favicons, and activity timestamps for the dashboard.</li>
+  <li><strong>storage</strong> — required to persist saved tabs, daily stats, and user preferences locally on your device.</li>
   <li><strong>bookmarks</strong> — required to save stale tabs to a bookmark folder before closing them.</li>
 </ul>
 
