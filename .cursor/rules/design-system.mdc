@@ -1,0 +1,493 @@
+---
+description: Design system — modern SaaS (Linear/Stripe/Vercel lineage). Apply to all UI work in this repo and future projects.
+globs: ["**/*.css", "**/*.scss", "**/*.html", "**/*.tsx", "**/*.jsx", "**/*.vue", "**/*.svelte"]
+alwaysApply: true
+---
+
+# Design System — Modern SaaS (Linear / Stripe / Vercel lineage)
+
+Apply this style to every surface. Precedence when rules conflict: Accessibility → Hierarchy → Spacing → Depth → Color → Motion.
+
+---
+
+## 1. Core principles
+
+1. **Minimal, not sterile.** Strip everything that doesn't serve the user's task. Then add *just enough* warmth (colored shadow, soft glow, tinted surface) so it feels alive.
+2. **Hierarchy through weight, size, and color — never through borders or boxes.** If a user can't tell the primary action at a glance, the design is broken.
+3. **One job per element.** A banner either announces or prompts action, not both at equal weight. A badge either counts or alerts, not both.
+4. **Use accent color sparingly.** Accent is for the *one* thing you want clicked. Everything else is neutral.
+5. **Respect the grid.** All spacing, sizing, and radii come from the systems below. No arbitrary numbers.
+6. **Pixel-perfect always.** Prefer real `border` + real `box-shadow` over hacks. Avoid sub-pixel tricks (half-pixel borders, `background-clip` layering) — they fail at 1× zoom and in dark mode.
+
+---
+
+## 2. Color tokens (required)
+
+Every project MUST define these tokens. Never hard-code colors outside the token layer.
+
+```css
+:root {
+  /* Neutrals (warm paper base; swap to cool #f8f9fb for a "tech" feel) */
+  --ink: #1a1613;              /* primary text */
+  --paper: #f8f5f0;            /* page background */
+  --warm-gray: #e8e2da;        /* borders, dividers */
+  --muted: #9a918a;            /* secondary text, labels */
+  --card-bg: #fffdf9;          /* raised card surface */
+  --surface-raised: #ffffff;   /* chips/pills that sit ON cards or banners */
+
+  /* Accent (one accent per product; RGB variant required for rgba()) */
+  --accent: #4149d8;
+  --accent-rgb: 65, 73, 216;
+
+  /* Semantic (only if needed) */
+  --status-success: #3d7a4a;
+  --status-warning: #b8892e;
+  --status-danger: #b35a5a;
+
+  /* Depth tokens (derived from accent) */
+  --border-soft: rgba(var(--accent-rgb), 0.2);
+  --glow-soft: rgba(var(--accent-rgb), 0.08);
+  --shadow-surface: 0 1px 2px rgba(26, 22, 19, 0.04),
+                    0 6px 18px rgba(var(--accent-rgb), 0.07);
+  --shadow-highlight-top: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --shadow-btn: 0 1px 2px rgba(var(--accent-rgb), 0.28),
+                0 2px 8px rgba(var(--accent-rgb), 0.22);
+  --shadow-btn-hover: 0 2px 4px rgba(var(--accent-rgb), 0.32),
+                      0 4px 14px rgba(var(--accent-rgb), 0.28);
+  --focus-ring: 0 0 0 3px rgba(var(--accent-rgb), 0.22);
+}
+
+.theme-dark {
+  --ink: #e4e6ee;
+  --paper: #14151a;
+  --warm-gray: #262830;
+  --muted: #72767f;
+  --card-bg: #1c1e25;
+  --surface-raised: #1f2128;
+  --accent: #5b63e8;           /* accent shifts lighter in dark mode */
+  --accent-rgb: 91, 99, 232;
+  --border-soft: rgba(var(--accent-rgb), 0.28);
+  --glow-soft: rgba(var(--accent-rgb), 0.14);
+  --shadow-surface: 0 1px 2px rgba(0, 0, 0, 0.4),
+                    0 8px 24px rgba(var(--accent-rgb), 0.14);
+  --shadow-highlight-top: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-btn: 0 1px 2px rgba(0, 0, 0, 0.35),
+                0 2px 10px rgba(var(--accent-rgb), 0.35);
+  --shadow-btn-hover: 0 2px 6px rgba(0, 0, 0, 0.4),
+                      0 6px 18px rgba(var(--accent-rgb), 0.45);
+  --focus-ring: 0 0 0 3px rgba(var(--accent-rgb), 0.35);
+}
+```
+
+### Contrast requirements (WCAG)
+
+- Primary text (`--ink` on `--paper`): must be ≥ 7:1 (AAA).
+- Primary button label (white on `--accent`): must be ≥ 4.5:1 (AA), aim for ≥ 7:1.
+- Muted text (`--muted`): must be ≥ 4.5:1 against its background.
+- Focus ring must be visible on every interactive element.
+
+---
+
+## 3. Spacing — 4/8px grid (strict)
+
+Only these values: `4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96`.
+
+| Use case | Value |
+|---|---|
+| Icon-to-text gap | `8px` |
+| Inline element gap (within a row) | `8–12px` |
+| Button internal padding (vertical / horizontal) | `9px / 16px` (height 34px) |
+| Card padding | `20–24px` |
+| Banner padding | `16px 20px` |
+| Section vertical rhythm | `24–32px` |
+| Page gutter | `32–48px` |
+| Major section separation | `48–64px` |
+
+**Never use** `3px, 5px, 7px, 10px, 14px, 18px, 22px`. If you're tempted, you're off-grid.
+
+---
+
+## 4. Radii system (monotonic)
+
+Radii get **smaller** as elements nest deeper. Never mix pill-shapes with rounded-rectangles on the same surface.
+
+| Element | Radius |
+|---|---|
+| Page-level container / modal | `16px` |
+| Card, banner, panel | `12px` |
+| Button, input, icon-container, chip | `8px` |
+| Small tag, inline dot | `6px` or `999px` (only for count pills) |
+| Circle (avatars, not icons) | `50%` |
+
+**Forbidden:** `10px`, `14px`, `20px` radii. Pill-shape (`999px`) only for count badges and status tags, never for buttons.
+
+---
+
+## 5. Typography
+
+```css
+--font-body: 'Inter', 'DM Sans', system-ui, sans-serif;
+--font-serif: 'Newsreader', Georgia, serif; /* optional, for editorial headings */
+```
+
+| Role | Size / weight / tracking |
+|---|---|
+| Display H1 | 32–40px / 300–400 (thin) / -0.02em |
+| Section heading H2 | 20–24px / 500 / -0.01em |
+| Card/banner title | 14–15px / 600 / -0.006em |
+| Body | 14–15px / 400 / 0 |
+| Secondary text | 13px / 400 / 0, color `--muted` |
+| Label / caps | 10–11px / 500 / +1.5em, uppercase, color `--muted` |
+| Button | 13px / 600 / -0.005em |
+| Count badge | 11px / 600 / 0, `font-variant-numeric: tabular-nums` |
+
+Line-height: body `1.5`, headings `1.2`, buttons `1`, single-line labels `1`.
+
+---
+
+## 6. Depth — shadows & glows
+
+### The two-layer shadow (signature move)
+
+Every raised surface (card, banner, menu, modal) uses **two shadow layers**:
+
+```css
+box-shadow:
+  0 1px 2px rgba(26, 22, 19, 0.04),           /* tight contact */
+  0 6px 18px rgba(var(--accent-rgb), 0.07),   /* soft colored lift */
+  inset 0 1px 0 rgba(255, 255, 255, 0.7);     /* top highlight */
+```
+
+Why: a single gray shadow looks like a cardboard cutout. The *colored* second layer makes the surface feel "lit" by the accent. The inset highlight mimics real edge-light.
+
+### The corner glow (Linear move)
+
+Optional atmosphere on hero surfaces and banners. A heavily-blurred radial gradient anchored in one corner:
+
+```css
+.surface { position: relative; overflow: hidden; }
+.surface::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(
+    120% 180% at 0% 0%,
+    var(--glow-soft) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+.surface > * { position: relative; } /* keep children above the glow */
+```
+
+### Button shadow
+
+Filled primary buttons use `--shadow-btn` — saturated accent tint so the button looks lit from its own color.
+
+### Rules
+
+- Never use pure black shadows in light mode; use `rgba(ink, 0.04–0.08)` or tinted accent.
+- Never stack more than 3 shadow layers.
+- No drop-shadow on flat elements like labels, inputs at rest, or dividers.
+
+---
+
+## 7. Components
+
+### Button
+
+Three variants. Height `34px`, radius `8px`, font 13px/600.
+
+```html
+<button class="btn btn-primary">Primary</button>
+<button class="btn btn-secondary">Secondary</button>
+<button class="btn btn-ghost">Ghost</button>
+```
+
+```css
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 34px; padding: 0 16px; gap: 8px;
+  border-radius: 8px; border: 1px solid transparent;
+  font: 600 13px/1 var(--font-body);
+  letter-spacing: -0.005em;
+  cursor: pointer; white-space: nowrap;
+  transition: box-shadow .18s ease, transform .18s ease,
+              background .18s ease, border-color .18s ease, color .18s ease;
+}
+.btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+.btn-primary:hover { box-shadow: var(--shadow-btn-hover); transform: translateY(-1px); }
+.btn-primary:focus-visible { box-shadow: var(--shadow-btn), var(--focus-ring); }
+
+.btn-secondary {
+  background: transparent; color: var(--muted);
+  border-color: var(--warm-gray);
+}
+.btn-secondary:hover {
+  background: rgba(var(--accent-rgb), 0.06);
+  border-color: rgba(var(--accent-rgb), 0.3);
+  color: var(--ink); transform: translateY(-1px);
+}
+
+.btn-ghost { background: transparent; color: var(--muted); }
+.btn-ghost:hover { background: rgba(var(--accent-rgb), 0.06); color: var(--ink); }
+```
+
+**Rules:**
+- **One primary per screen-region.** Two filled buttons side-by-side = broken hierarchy. If you need two actions, secondary must be ghost.
+- Never use `min-width` on buttons. Size to label + padding.
+- Never pill-shape a button (`border-radius: 999px`). That's for tags/badges.
+- Icon-only buttons: 34×34px, 8px radius, 18px icon.
+
+### Card
+
+```css
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-gray);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-surface), var(--shadow-highlight-top);
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.card:hover {
+  border-color: rgba(var(--accent-rgb), 0.3);
+  transform: translateY(-1px);
+}
+```
+
+### Banner / notification
+
+**Banners are tiered by urgency × frequency, NOT by "banners all get the hero treatment."** The more often a banner appears, the quieter it must be. Pick the tier *before* writing CSS.
+
+| Tier | When to use | Treatment |
+|---|---|---|
+| **T1 — Routine** (default) | Recurring housekeeping advisories the user sees every session ("5 stale tabs", "3 duplicates found", "2 items saved for later") | Neutral — looks like a sibling of cards |
+| **T2 — Action required** | Occasional, user must respond but not critical ("re-auth needed", "quota at 80%") | Tinted — accent border + soft-accent shadow, keep inset highlight, **no corner glow** |
+| **T3 — Critical / one-time** | Rare, high-stakes ("payment failed", "sync error", "destructive confirm") | Full kit — tinted fill + border + corner glow + inset highlight + two-layer colored shadow. Usually paired with `role="alert"`. |
+
+**Default to T1.** Escalate only with evidence (threshold count, severity class, explicit criticality). A banner you see every day is T1 no matter how "important" it feels.
+
+```css
+/* T1 — Routine (the default). Sits alongside cards, not above them. */
+.banner {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--warm-gray);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow-surface);
+  /* No ::before glow. No inset highlight. Color lives in the CTA, not the shell. */
+}
+
+/* T2 — Action required. Add this class OR gate via threshold. */
+.banner.is-action {
+  background: var(--paper);
+  border-color: rgba(var(--accent-rgb), 0.22);
+  box-shadow: var(--shadow-surface), var(--shadow-highlight-top);
+}
+
+/* T3 — Critical. Full glow treatment. */
+.banner.is-critical {
+  background: linear-gradient(180deg,
+    rgba(var(--accent-rgb), 0.06),
+    rgba(var(--accent-rgb), 0.02));
+  border-color: rgba(var(--accent-rgb), 0.28);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 6px 18px rgba(var(--accent-rgb), 0.1),
+    inset 0 1px 0 var(--banner-highlight);
+  overflow: hidden;
+}
+.banner.is-critical::before { /* corner glow */
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(60% 80% at 0% 0%,
+    rgba(var(--accent-rgb), 0.12), transparent 60%);
+  pointer-events: none;
+}
+.banner.is-critical > * { position: relative; }
+```
+
+**The color-as-signal rule (new & enforced):**
+Inside any banner, count the amber-saturated elements. If you find more than **two** (typically: the count badge + the primary CTA), you have color noise. Everything else — background, border, icon container, title, secondary buttons — should be neutral. Same applies to sage, rose, etc. Accent saturation is a spotlight; a spotlight on everything lights nothing.
+
+Add `role="status"` + `aria-live="polite"` for T1/T2 banners, `role="alert"` + `aria-live="assertive"` for T3.
+
+### Chip / pill / tag
+
+For listing items (tabs, users, file references):
+
+```css
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--warm-gray);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: 500 12px/1 var(--font-body);
+  color: var(--ink);
+  transition: border-color .15s, box-shadow .15s;
+}
+.chip:hover {
+  border-color: rgba(var(--accent-rgb), 0.35);
+  box-shadow: 0 1px 2px rgba(var(--accent-rgb), 0.1);
+}
+```
+
+**Rule:** When chips sit on a *tinted* surface (like a banner), their background MUST be `--surface-raised`, not the same tint. Same-family tints flatten into soup (violates Gestalt figure/ground).
+
+### Count badge
+
+```css
+.count-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 22px; height: 20px; padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  font: 600 11px/1 var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
+```
+
+**Rule:** Count badges are *neutral*, not alarming. Never use solid accent fill + white text for counts — that's an alert pattern and will fight the primary CTA for attention.
+
+### Input
+
+```css
+.input {
+  height: 36px; padding: 0 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--warm-gray);
+  border-radius: 8px;
+  font: 400 14px/1 var(--font-body);
+  color: var(--ink);
+  transition: border-color .15s, box-shadow .15s;
+}
+.input::placeholder { color: var(--muted); }
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+```
+
+### Icon container (product-icon style)
+
+For icons inside banners, list rows, or cards:
+
+```css
+.icon-wrap {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(var(--accent-rgb), 0.12);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.icon-wrap svg {
+  width: 16px; height: 16px;
+  color: var(--accent); stroke-width: 2;
+}
+```
+
+Sizes: `24px` (inline), `28px` (default), `40px` (hero).
+**Never use `border-radius: 50%` for non-avatar icons.**
+
+---
+
+## 8. Hierarchy rules (the most-violated section)
+
+1. **There is always exactly one primary action per screen region.**
+2. **Secondary actions are ghost buttons.** Never a second filled button.
+3. **Destructive actions are secondary by default.** Only filled-red if the destruction is the entire point of the UI (e.g. a confirmation modal).
+4. **Scale of contrast matches scale of importance.** The thing most worth clicking should have the strongest color, the heaviest weight, and the most surrounding space.
+5. **Negative space is a design element.** White space around the primary action amplifies its importance more than color does.
+6. **Count badges, chips, and tags are quiet.** They inform, they don't alert.
+
+---
+
+## 9. Motion
+
+- Default transition: `150–200ms ease` or `cubic-bezier(0.16, 1, 0.3, 1)` for "snappy" ease-out.
+- Hover: translate `-1px` + shadow upgrade. Never scale on hover (> 1.01 looks goofy).
+- Mount/dismount: fade + 8px translateY. Duration `300–400ms`.
+- **Explicit properties only** — never `transition: all`. List `box-shadow, transform, background, border-color, color`.
+- **Reduced motion:** always honor `@media (prefers-reduced-motion: reduce)` by setting transition duration to `0.01ms`.
+
+---
+
+## 10. Accessibility (non-negotiable)
+
+- Every interactive element MUST have a visible `:focus-visible` state using `--focus-ring`.
+- Minimum touch target: 34×34px (buttons, chips with actions, icon buttons).
+- Decorative icons: `aria-hidden="true"`.
+- Status banners: `role="status"` + `aria-live="polite"`. Alerts: `role="alert"` + `aria-live="assertive"`.
+- Inputs: always a `<label>` (visible or `sr-only`), never placeholder-as-label.
+- Color alone must never carry meaning; pair with an icon, label, or weight change.
+
+---
+
+## 11. What to avoid (common mistakes)
+
+| Don't | Do |
+|---|---|
+| Harsh 1–3px solid accent bars on the left of banners | 1px soft-accent border all around + corner glow |
+| Both buttons filled with accent color | Primary filled, secondary ghost |
+| Solid-color count badges with white text | `rgba(accent, 0.1)` bg + accent text |
+| Circular icon containers on rectangular cards | 8px rounded-square container |
+| Pure black or pure gray shadows | Two-layer shadow with colored second layer |
+| `transition: all` | List the exact properties |
+| Pill-shaped buttons (`border-radius: 999px`) | 8px radius buttons |
+| Arbitrary spacing values (7px, 13px, 17px) | 4/8px grid only |
+| Placeholder as label | Real `<label>` |
+| Tint-on-tint (accent chip inside accent banner) | `--surface-raised` chips inside tinted banners |
+| `box-shadow: none` on buttons then `hover: 0 8px 24px` | Always have a base shadow; hover *upgrades* it |
+| Borders via `background-clip` tricks | Real `border` + real `box-shadow` |
+| Full-kit glow banners for routine, recurring states | Default to T1 (neutral). Glow is for T3 only. |
+| 4+ amber-saturated elements stacked inside one banner | At most 2: count badge + primary CTA. Everything else neutral. |
+
+---
+
+## 12. Dark mode
+
+- Every token above has a dark-mode override. Never write dark-mode styles outside the token layer.
+- In dark mode: accent shifts **lighter** (more luminous), shadows shift **darker** (black-based) but keep a colored second layer.
+- Backgrounds in dark mode are NOT pure black. Use `#14151a` (cool) or `#1a1613` (warm).
+- The top-highlight inset goes from `rgba(255,255,255,0.7)` (light mode) to `rgba(255,255,255,0.04)` (dark mode) — barely there, but still present for edge definition.
+
+---
+
+## 13. Decision framework when generating new UI
+
+When asked to design a new component, work in this order:
+
+1. **Purpose.** What's the one thing the user should do here? That becomes the primary action.
+2. **Hierarchy.** What supports the primary? Those are secondary (ghost). What's context? That's muted text.
+3. **Spacing.** Pick padding from the grid (16, 20, 24) based on information density.
+4. **Radii.** Pick the outer radius (12 for panels, 8 for controls). Children get equal-or-smaller radius.
+5. **Color.** Start monochrome. Add accent only where it supports step 1.
+6. **Depth.** Add base shadow + top highlight. Add corner glow ONLY if it's a hero surface (modal, T3 banner, landing-page CTA). Never on routine/recurring elements.
+7. **Motion.** Hover state. Focus state. Mount animation if it appears dynamically.
+8. **Accessibility.** Contrast check, focus ring, ARIA roles, touch targets.
+
+If step 5 makes you want to tint three different things accent color, stop. Go back to step 2 — your hierarchy is wrong.
+
+**Banner-specific check:** If it's a banner, first decide the tier (T1/T2/T3) using *frequency × urgency*, not aesthetic preference. If you see this banner multiple times per session, it's T1 — period. "But it's important!" doesn't upgrade it; importance measured in repetitions equals background noise.
+
+---
+
+## 14. Inspirations (reference products)
+
+When in doubt, look at these in this order:
+1. **Linear** — depth, glow, dark mode, typography
+2. **Stripe** — shadows, form fields, button states
+3. **Vercel** — neutrality, typography, spacing rhythm
+4. **Raycast / Arc** — menus, hotkeys, inline UI
+5. **Notion** — information density, chips, tags
+
+Do NOT reference: Bootstrap defaults, Material Design, iOS system UI, Tailwind UI pill buttons. Different design languages, wrong family.

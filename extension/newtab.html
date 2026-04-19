@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Swoosh</title>
+  <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+  <link rel="shortcut icon" href="favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="favicon/site.webmanifest" />
 
   <link rel="stylesheet" href="fonts/fonts.css">
   <link rel="stylesheet" href="style.css">
@@ -17,22 +22,41 @@
        ================================================================ -->
   <header>
     <div class="header-left">
-      <h1 id="greeting"></h1>
-      <div class="clock" id="clockDisplay"></div>
-      <div class="date" id="dateDisplay"></div>
+      <div class="greeting-row">
+        <h1 id="greeting"></h1>
+        <div class="clock" id="clockDisplay"></div>
+      </div>
     </div>
     <div class="header-center">
       <form id="googleSearchForm" action="https://www.google.com/search" method="get" target="_self">
         <div class="universal-search-wrap">
           <div class="google-search-box">
             <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-            <input type="text" name="q" id="googleSearchInput" placeholder="Search tabs &amp; Google..." autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="universalSearchDropdown" aria-expanded="false">
+            <input type="text" name="q" id="googleSearchInput" placeholder="Search tabs &amp; Google… ( / or ⌘K )" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="universalSearchDropdown" aria-expanded="false">
           </div>
           <div class="universal-search-dropdown" id="universalSearchDropdown" role="listbox" hidden></div>
         </div>
       </form>
     </div>
     <div class="header-right">
+      <div class="settings-wrap">
+        <button class="theme-toggle" id="settingsToggle" title="Settings" aria-expanded="false" aria-controls="settingsPopover">
+          <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+        </button>
+        <div class="settings-popover" id="settingsPopover">
+          <div class="settings-label">Stale tabs after</div>
+          <div class="settings-options" id="staleOptions">
+            <button class="settings-opt" data-hours="1">1 hour</button>
+            <button class="settings-opt" data-hours="2">2 hours</button>
+            <button class="settings-opt" data-hours="4">4 hours</button>
+            <button class="settings-opt" data-hours="8">8 hours</button>
+            <button class="settings-opt" data-hours="24">1 day</button>
+            <button class="settings-opt" data-hours="72">3 days</button>
+            <button class="settings-opt" data-hours="168">1 week</button>
+            <button class="settings-opt" data-hours="336">2 weeks</button>
+          </div>
+        </div>
+      </div>
       <button class="theme-toggle" id="paletteToggle" title="Toggle palette">
         <svg class="theme-icon palette-icon-warm" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" /></svg>
         <svg class="theme-icon palette-icon-cool" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17L9 20M12 17L15 20M12 17V12M12 17V21M12 7L9 4M12 7L15 4M12 7V12M12 7V3M12 12L7.66985 9.49995M12 12L16.3301 14.4999M12 12L7.66985 14.4999M12 12L16.3301 9.49995M16.3301 14.4999L17.4282 18.598M16.3301 14.4999L20.4282 13.4019M16.3301 14.4999L19.7943 16.5M7.66985 9.49995L3.57178 10.598M7.66985 9.49995L6.57178 5.40187M7.66985 9.49995L4.20581 7.5M16.3301 9.49995L20.4282 10.598M16.3301 9.49995L17.4282 5.40187M16.3301 9.49995L19.7943 7.5M7.66985 14.4999L6.57178 18.598M7.66985 14.4999L3.57178 13.4019M7.66985 14.4999L4.20581 16.5" /></svg>
@@ -45,37 +69,16 @@
   </header>
 
   <!-- ================================================================
-       SWOOSH DUPES BANNER
-       ================================================================ -->
-  <div class="tab-cleanup-banner" id="swooshDupeBanner" style="display:none">
-    <div class="tab-cleanup-left">
-      <div class="tab-cleanup-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
-        </svg>
-      </div>
-      <span class="stale-banner-title">Multiple Swoosh tabs open!</span>
-      <span class="stale-banner-count" id="swooshDupeCount"></span>
-    </div>
-    <button class="tab-cleanup-btn" data-action="close-swoosh-dupes">Close extras</button>
-  </div>
-
-  <!-- ================================================================
        MAIN CONTENT AREA
        ================================================================ -->
   <div class="dashboard-columns" id="dashboardColumns">
 
     <!-- LEFT COLUMN: Open tabs -->
     <div class="active-section" id="openTabsSection" style="display:none">
-      <div class="section-header">
-        <h2 id="openTabsSectionTitle">Right now</h2>
-        <div class="section-line"></div>
-        <div class="section-count" id="openTabsSectionCount"></div>
-      </div>
-      <div class="stale-banner" id="staleBanner" style="display:none">
+      <div class="stale-banner" id="staleBanner" role="status" aria-live="polite" style="display:none">
         <div class="stale-banner-top">
           <div class="stale-banner-identity">
-            <div class="tab-cleanup-icon">
+            <div class="tab-cleanup-icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
@@ -90,24 +93,11 @@
         </div>
         <div class="stale-banner-list" id="staleBannerList"></div>
       </div>
-      <div class="category-legend">
-        <span class="cat-pill" data-cat="jio" style="display:none"><span class="cat-dot" style="background:var(--category-jio)"></span>Jio</span>
-        <span class="cat-pill" data-cat="work" style="display:none"><span class="cat-dot" style="background:var(--category-work)"></span>Work</span>
-        <span class="cat-pill" data-cat="social" style="display:none"><span class="cat-dot" style="background:var(--category-social)"></span>Social</span>
-        <span class="cat-pill" data-cat="media" style="display:none"><span class="cat-dot" style="background:var(--category-media)"></span>Media</span>
-        <span class="cat-pill" data-cat="ai" style="display:none"><span class="cat-dot" style="background:var(--category-ai)"></span>AI</span>
-        <span class="cat-pill" data-cat="dev" style="display:none"><span class="cat-dot" style="background:var(--category-dev)"></span>Dev</span>
-      </div>
       <div class="missions" id="openTabsMissions"></div>
     </div>
 
     <!-- RIGHT COLUMN: Saved for Later checklist -->
     <div class="deferred-column" id="deferredColumn" style="display:none">
-      <div class="section-header">
-        <h2>Saved for later</h2>
-        <div class="section-line"></div>
-        <div class="section-count" id="deferredCount"></div>
-      </div>
       <div class="deferred-list" id="deferredList"></div>
       <div class="deferred-empty" id="deferredEmpty" style="display:none">
         Nothing saved. Living in the moment.
@@ -131,10 +121,6 @@
        STATS SECTION
        ================================================================ -->
   <div class="stats-section" id="statsSection" style="display:none">
-    <div class="section-header">
-      <h2>Today</h2>
-      <div class="section-line"></div>
-    </div>
     <div class="stats-grid" id="statsGrid"></div>
   </div>
 
@@ -148,12 +134,8 @@
         <div class="stat-label">Open tabs</div>
       </div>
       <div class="stat">
-        <div class="stat-num" id="statStale">—</div>
-        <div class="stat-label">Stale</div>
-      </div>
-      <div class="stat">
         <div class="stat-num" id="statActiveTime">—</div>
-        <div class="stat-label">Active today</div>
+        <div class="stat-label">Focus time today</div>
       </div>
     </div>
   </footer>
@@ -166,7 +148,9 @@
     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
   </svg>
   <span id="toastText"></span>
+  <button class="toast-undo" id="toastUndo" hidden>Undo</button>
 </div>
+
 
 <!-- Storage layer (chrome.storage adapter) -->
 <script src="storage.js"></script>

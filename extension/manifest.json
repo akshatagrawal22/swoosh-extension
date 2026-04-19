@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Swoosh",
-  "version": "2.0",
-  "description": "New tab page that groups your open tabs by domain and lets you close them with style.",
+  "version": "2.1",
+  "minimum_chrome_version": "120",
+  "description": "Your tabs, organized. Swoosh groups open tabs by site, surfaces stale ones, and lets you clear the clutter — with a satisfying swoosh.",
   "permissions": ["tabs", "activeTab", "storage", "topSites", "bookmarks"],
   "host_permissions": ["https://suggestqueries.google.com/*", "https://www.google.com/s2/favicons/*"],
   "chrome_url_overrides": { "newtab": "newtab.html" },
